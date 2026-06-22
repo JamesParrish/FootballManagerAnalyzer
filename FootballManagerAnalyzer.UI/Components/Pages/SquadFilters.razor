@@ -1,0 +1,37 @@
+﻿@using FootballManagerAnalyzer.Application.Models
+@using FootballManagerAnalyzer.UI.Services.Interfaces
+@using FootballManagerAnalyzer.UI.Extensions
+
+@rendermode InteractiveServer
+
+<h2>Squad Filters</h2>
+<div>
+    Position:
+    <InputSelect ValueExpression="@(()=>SelectedPosition)"
+                 Value="@SelectedPosition"
+                 ValueChanged="@((string value) => UpdateFilters(value))">
+        @foreach (Position position in Enum.GetValues(typeof(Position)))
+        {
+            <option value="@((int)position)">@position.GetDisplayName()</option>
+        }
+    </InputSelect>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<Position> OnFiltersChanged { get; set; }
+
+    private string SelectedPosition { get; set; }
+
+    public async void UpdateFilters(string value)
+    {
+        SelectedPosition = value;
+
+        if (!Enum.TryParse<Position>(value, out var selectedPosition))
+        {
+            selectedPosition = Position.Unknown;
+        }
+
+        OnFiltersChanged.InvokeAsync(selectedPosition);
+    }
+}

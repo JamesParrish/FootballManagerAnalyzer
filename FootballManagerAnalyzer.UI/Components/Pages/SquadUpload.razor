@@ -1,0 +1,24 @@
+﻿@using FootballManagerAnalyzer.Application.Models
+@using FootballManagerAnalyzer.UI.Services.Interfaces
+
+@inject IFileParser FileParser
+
+@rendermode InteractiveServer
+
+<h2>Squad Upload</h2>
+<div>
+    <InputFile class="btn btn-primary" OnChange="UploadData"></InputFile>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback<IEnumerable<Player>> OnUpload { get; set; }
+
+    public IEnumerable<Player> PlayerData { get; set; } = new List<Player>();
+
+    public async void UploadData(InputFileChangeEventArgs e)
+    {
+        PlayerData = await FileParser.ParseAsync(e.File);
+        OnUpload.InvokeAsync(PlayerData);
+    }
+}

@@ -1,0 +1,13 @@
+.players {
+    display: grid;
+    grid-template-columns: repeat(auto);
+}
+
+.players__heading, .players__player {
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-column: 1 / 9;
+}
+
+.player__column {
+}

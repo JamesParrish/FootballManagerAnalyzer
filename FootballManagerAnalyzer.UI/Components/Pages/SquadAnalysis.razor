@@ -1,0 +1,65 @@
+﻿@using FootballManagerAnalyzer.Application.Models
+@using FootballManagerAnalyzer.UI.Services.Interfaces
+
+@inject IAttributesService AttributesService
+
+@rendermode InteractiveServer
+
+<h2>Squad Analysis</h2>
+
+<div class="players">
+    <div class="players__heading">
+        <div class="player__column">Position Selected</div>
+        <div class="player__column">Name</div>
+        <div class="player__column" onclick="Sort">Average Relevant</div>
+        <div class="player__column">Average</div>
+        <div class="player__column">Average Physical</div>
+        <div class="player__column">Best Position</div>
+        <div class="player__column">Best Role</div>
+        <div class="player__column">Positions</div>
+    </div>
+    @foreach (var playerData in GetFilteredPlayers())
+    {
+        <div class="players__player player">
+            <div class="player__column player__position-selected">@playerData.PositionSelected</div>
+            <div class="player__column player__name">@playerData.Name</div>
+            <div class="player__column player__name">@GetPositionalRating(playerData.Attributes)</div>
+            <div class="player__column player__name">@AttributesService.GetAverageRating(playerData.Attributes)</div>
+            <div class="player__column player__name">@AttributesService.GetAveragePhysicalRating(playerData.Attributes)</div>
+            <div class="player__column player__best-position">@playerData.BestPosition</div>
+            <div class="player__column player__best-role">@playerData.BestRole</div>
+            <div class="player__column player__position">@playerData.Position</div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<Player> SquadData { get; set; }
+
+    [Parameter]
+    public Position FilterPosition { get; set; }
+
+    private IEnumerable<Player> GetFilteredPlayers()
+    {
+        return FilterPosition == Position.Unknown ?
+            SquadData :
+            SquadData.Where(p => p.Positions.Contains(FilterPosition))
+                .OrderByDescending(p => GetPositionalRating(p.Attributes));
+    }
+
+    private decimal GetPositionalRating(Attributes attributes)
+    {
+        return FilterPosition switch
+        {
+            Position.Defender => AttributesService.GetAverageDefenderRating(attributes),
+            Position.WingBack => AttributesService.GetAverageWingBackRating(attributes),
+            Position.DefensiveMidfielder => AttributesService.GetAverageDefensiveMidfielderRating(attributes),
+            Position.CentralMidfielder => AttributesService.GetAverageCentralMidfielderRating(attributes),
+            Position.AttackingMidfielder => AttributesService.GetAverageAttackingMidfielderRating(attributes),
+            Position.Winger => AttributesService.GetAverageWingerRating(attributes),
+            Position.Striker => AttributesService.GetAverageStrikerRating(attributes),
+            _ => 0
+        };
+    }
+}

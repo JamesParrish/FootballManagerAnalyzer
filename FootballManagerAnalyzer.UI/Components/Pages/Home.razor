@@ -1,0 +1,35 @@
+﻿@page "/"
+
+@using FootballManagerAnalyzer.Application.Models
+
+@rendermode InteractiveServer
+
+<PageTitle>FM Squad Analysis</PageTitle>
+
+<h1>FM Squad Analysis</h1>
+
+@if (playerData == null || !playerData.Any())
+{
+    <SquadUpload OnUpload=UploadCallbackFunction />
+}
+else
+{
+    <SquadFilters OnFiltersChanged="UpdateFiltersCallbackFunction"></SquadFilters>
+    <SquadAnalysis SquadData="playerData" FilterPosition="@FilterPosition"></SquadAnalysis>
+}
+
+@code {
+    private IEnumerable<Player>? playerData = new List<Player>();
+    private Position FilterPosition;
+
+    private void UploadCallbackFunction(IEnumerable<Player> uploadData)
+    {
+        playerData = uploadData;
+    }
+
+    private void UpdateFiltersCallbackFunction(Position value)
+    {
+        FilterPosition = value;
+        StateHasChanged();
+    }
+}
