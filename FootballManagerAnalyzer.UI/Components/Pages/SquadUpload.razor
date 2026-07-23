@@ -7,8 +7,13 @@
 
 <h2>Squad Upload</h2>
 <div>
-    <InputFile class="btn btn-primary" OnChange="UploadData"></InputFile>
+    <InputFile class="btn btn-primary" OnChange="UploadData" accept=".rtf"></InputFile>
 </div>
+
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div>@ErrorMessage</div>
+}
 
 @code {
     [Parameter]
@@ -16,9 +21,33 @@
 
     public IEnumerable<Player> PlayerData { get; set; } = new List<Player>();
 
+    private string ErrorMessage;
+
     public async void UploadData(InputFileChangeEventArgs e)
     {
-        PlayerData = await FileParser.ParseAsync(e.File);
-        OnUpload.InvokeAsync(PlayerData);
+        ErrorMessage = null;
+
+        if (!e.File.Name.EndsWith(".rtf"))
+        {
+            ErrorMessage = "Invalid file type - please upload a .rtf export from your FM24 save.";
+            return;
+        }
+
+        try
+        {
+            PlayerData = await FileParser.ParseAsync(e.File);
+
+            // TODO: Handle Better
+            if (PlayerData == null)
+            {
+                ErrorMessage = "An error occured while parsing player data";
+            }
+
+            await OnUpload.InvokeAsync(PlayerData);
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = ex.Message;
+        }
     }
 }
