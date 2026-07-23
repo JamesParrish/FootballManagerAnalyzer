@@ -1,6 +1,7 @@
 using FootballManagerAnalyzer.Application;
 using FootballManagerAnalyzer.UI;
 using FootballManagerAnalyzer.UI.Components;
+using Microsoft.AspNetCore.StaticFiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,14 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+var provider = new FileExtensionContentTypeProvider();
+provider.Mappings[".fmf"] = "text/plain";
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ContentTypeProvider = provider
+});
+
 app.UseAntiforgery();
 
 app.MapRazorComponents<App>()

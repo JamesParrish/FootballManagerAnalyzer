@@ -1,0 +1,35 @@
+﻿@page "/about"
+
+@using FootballManagerAnalyzer.Application.Models
+
+@rendermode InteractiveServer
+
+<PageTitle>FM Squad Analysis</PageTitle>
+
+<h1>FM Squad Analyzer Tool</h1>
+
+<div>This is a tool to help analyse Football Manager 24 squads. It will provide a basic overview of a player's average attribute rating, their average physical attribute rating and a weighted average of some of the most important attributes for their position.</div>
+
+<h2>How to use</h2>
+
+<h3>Exporting squad data from FM24</h3>
+
+
+<div>The FM Squad Analyzer tool uses custom views to export data. There is currently a view for the Squad screen and a view for the Scouting screen. To start analysis, download one of the views below:</div>
+
+<ul>
+    <li><a href="/files/FM Analyzer - All Attributes - Squad.fmf">Squad filter</a></li>
+    <li><a href="/files/FM Analyzer - All Attributes - Scouting.fmf">Scouting filter</a></li>
+</ul>
+
+<div>Import the view to your game and you should see a big wall of numbers. Filter your squad to include the players you want to analyse, ready for export.</div>
+
+<div>To export your squad data, select Print Screen from the FM menu (or press Ctrl-P). Export your squad data as a Text File and make a note of where the export is saved. By default the export is saved as a .rtf file in your Documents folder, in \Sports Interactive\Football Manager 2024.</div>
+
+<h3>Importing squad data to be analyzed</h3>
+
+<div>On the <a href="/">main page</a>, click browse and navigate to the location of the FM24 export. Select the exported .rtf file and click Open. The data should be imported into the analyzer and be presented for your viewing pleasure.</div>
+
+<div>The dropdown at the top of the screen can be used to select a general position. When a position is selected, the player list is filtered to only include players that can play in that position, and a weighted average rating is shown in the Average Relevant column.</div>
+
+<div>NB: The weighted average is based on the key and recommended attributes suggested by Football Manager, with some tweaks to fit my own personal tastes. Your preferences may vary, but them's the breaks - if you don't like it, write your own app.</div>

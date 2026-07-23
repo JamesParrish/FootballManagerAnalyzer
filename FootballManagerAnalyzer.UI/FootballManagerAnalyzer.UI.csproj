@@ -11,6 +11,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Update="Components\Pages\About.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
+    <Content Update="wwwroot\files\FM Analyzer - All Attributes - Scouting.fmf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\files\FM Analyzer - All Attributes - Squad.fmf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\fm-analyzer.css">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
